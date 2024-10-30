@@ -49,18 +49,6 @@
 ;;   `require' or `use-package'.
 ;; - `map!' for binding new keys
                                         ;(require 'org-mime)
-;; (require 'centaur-tabs)
-;; (centaur-tabs-mode t)
-;; (setq centaur-tabs-set-bar 'under
-;;       centaur-tabs-style "wave"
-;;       centaur-tabs-set-icons t
-;;       centaur-tabs-gray-out-icons 'buffer
-;;       centaur-tabs-height 30
-;;       centaur-tabs-set-modified-marker t
-;;       centaur-tabs-style "bar"
-;;       centaur-tabs-modified-marker "•")
-;; (global-set-key (kbd "C-,")  'centaur-tabs-backward)
-;; (global-set-key (kbd "C-'")  'centaur-tabs-forward)
 
 ;; Evil-escape sequence
 (setq-default evil-escape-key-sequence "kj")
@@ -444,15 +432,22 @@
                         (evil-window-decrease-width 5)
                       (evil-window-increase-width 5)))
       "S-<up>"    (lambda () (interactive)
-                    (if (window-in-direction 'above)
+                    (if (window-in-direction 'below)
                         (evil-window-decrease-height 2)
                       (evil-window-increase-height 2)))
       "S-<down>"  (lambda () (interactive)
-                    (if (window-in-direction 'below)
+                    (if (window-in-direction 'above)
                         (evil-window-decrease-height 2)
                       (evil-window-increase-height 2))))
 
-;; ;; /path/to/project/.dir-locals.el
+
+(map! :n "<C-tab>"   #'centaur-tabs-forward    ; normal mode only
+      :n "<backtab>" #'centaur-tabs-backward)  ; normal mode only
+
+(define-key evil-normal-state-map "f" 'avy-goto-char-2)
+(define-key evil-normal-state-map "F" 'avy-goto-char-2)
+
+;; /path/to/project/.dir-locals.el
 ;; ((sql-mode . ((sql-postgres-login-params
 ;;                '((user :default "postgres")
 ;;                  (database :default "postgres")
