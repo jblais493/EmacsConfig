@@ -52,8 +52,8 @@
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
 
 ;; copilot setup
-(package! copilot
-  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
+;;(package! copilot
+;;  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el" "dist")))
 
 ;; org-roam
 (unpin! org-roam)

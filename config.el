@@ -26,7 +26,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (add-to-list 'custom-theme-load-path "~/.doom.d/themes/")
-(load-theme 'nowhere t)
+(load-theme 'doom-nord t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -127,13 +127,13 @@
 ;; ;; Number the candidates (use M-1, M-2 etc to select completions).
 ;; (setq company-show-numbers t)
 ;; accept completion from copilot and fallback to company
-(use-package! copilot
-  :hook (prog-mode . copilot-mode)
-  :bind (:map copilot-completion-map
-              ("<tab>" . 'copilot-accept-completion)
-              ("TAB" . 'copilot-accept-completion)
-              ("C-TAB" . 'copilot-accept-completion-by-word)
-              ("C-<tab>" . 'copilot-accept-completion-by-word)))
+;;(use-package! copilot
+;;  :hook (prog-mode . copilot-mode)
+;;  :bind (:map copilot-completion-map
+;;              ("<tab>" . 'copilot-accept-completion)
+;;              ("TAB" . 'copilot-accept-completion)
+;;              ("C-TAB" . 'copilot-accept-completion-by-word)
+;;              ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
 ;; Setup Minimap
 (require 'sublimity)
@@ -431,6 +431,15 @@
        :desc "Save Bookmarks"                 "P" #'bookmark-save
        ))
 
+;; Saving
+(map! "C-s" #'save-buffer)
+
+;; Moving between splits
+(map! :map general-override-mode-map
+      "C-<right>" #'evil-window-right
+      "C-<left>"  #'evil-window-left
+      "C-<up>"    #'evil-window-up
+      "C-<down>"  #'evil-window-down)
 
 ;; ;; /path/to/project/.dir-locals.el
 ;; ((sql-mode . ((sql-postgres-login-params
