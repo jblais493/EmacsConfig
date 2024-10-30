@@ -447,3 +447,22 @@
 ;;                  (database :default "postgres")
 ;;                  (server :default "localhost")
 ;;                  (port :default 54322))))))
+
+;; starship prompt
+;; Set proper terminal type
+(setenv "TERM" "xterm-256color")
+
+;; For eshell specifically
+(after! eshell
+  (setq eshell-prompt-function
+        (lambda ()
+          (let ((prompt-string
+                 (string-trim
+                  (shell-command-to-string
+                   "TERM=xterm-256color STARSHIP_CONFIG=~/.config/starship.toml starship prompt --cmd-duration=0 --status=0"))))
+            (if (string-empty-p prompt-string)
+                "$ "
+              prompt-string))))
+
+  ;; Make sure the prompt regexp matches your starship prompt
+  (setq eshell-prompt-regexp "^[^$\n]*[$] "))
