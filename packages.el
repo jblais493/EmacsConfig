@@ -44,9 +44,9 @@
 ;; Rest Client
 (package! restclient)
 ;; Flutter Development
-(package! flutter)
-(package! dart-mode)
-(package! lsp-dart)
+;;(package! flutter)
+;;(package! dart-mode)
+;;(package! lsp-dart)
 ;; Go lang dev
 (package! go-mode)
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))

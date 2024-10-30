@@ -37,7 +37,7 @@
 (setq display-line-numbers-type 'relative)
 
 ;; Setup custom splashscreen
-(setq fancy-splash-image "~/Pictures/emacs.jpg")
+(setq fancy-splash-image "~/Pictures/emacs.png")
 
 ;; Here are some additional functions/macros that could help you configure Doom:
 ;;
@@ -214,12 +214,6 @@
 (global-set-key (kbd "C-=") 'text-scale-increase)
 (global-set-key (kbd "C--") 'text-scale-decrease)
 
-;; Evil movement
-(global-set-key (kbd "C-k") 'evil-window-up)
-(global-set-key (kbd "C-j") 'evil-window-down)
-(global-set-key (kbd "C-h") 'evil-window-left)
-(global-set-key (kbd "C-l") 'evil-window-right)
-
 ;; Spelling hopefully fixed
 (setq ispell-program-name "aspell")
 (setq ispell-extra-args '("--sug-mode=ultra" "--lang=en_US"))
@@ -317,13 +311,13 @@
       emms-info-asynchronously t
       emms-source-file-directory-tree-function 'emms-source-file-directory-tree-find)
 (map! :leader
-      (:prefix ("a" . "EMMS audio player")
+      (:prefix ("m" . "music/EMMS")  ;; Changed from 'a' to 'm' for music
        :desc "Play at directory tree"   "d" #'emms-play-directory-tree
-       :desc "Go to emms playlist"      "a" #'emms-playlist-mode-go
+       :desc "Go to emms playlist"      "p" #'emms-playlist-mode-go
        :desc "Shuffle"                  "h" #'emms-shuffle
        :desc "Emms pause track"         "x" #'emms-pause
        :desc "Emms stop track"          "s" #'emms-stop
-       :desc "Emms play previous track" "p" #'emms-previous
+       :desc "Emms play previous track" "b" #'emms-previous
        :desc "Emms play next track"     "n" #'emms-next))
 
 ;; Grab album artwork for dunst to display
@@ -439,7 +433,24 @@
       "C-<right>" #'evil-window-right
       "C-<left>"  #'evil-window-left
       "C-<up>"    #'evil-window-up
-      "C-<down>"  #'evil-window-down)
+      "C-<down>"  #'evil-window-down
+      ;; Window resizing with Shift
+      "S-<right>" (lambda () (interactive)
+                    (if (window-in-direction 'left)
+                        (evil-window-decrease-width 5)
+                      (evil-window-increase-width 5)))
+      "S-<left>"  (lambda () (interactive)
+                    (if (window-in-direction 'right)
+                        (evil-window-decrease-width 5)
+                      (evil-window-increase-width 5)))
+      "S-<up>"    (lambda () (interactive)
+                    (if (window-in-direction 'above)
+                        (evil-window-decrease-height 2)
+                      (evil-window-increase-height 2)))
+      "S-<down>"  (lambda () (interactive)
+                    (if (window-in-direction 'below)
+                        (evil-window-decrease-height 2)
+                      (evil-window-increase-height 2))))
 
 ;; ;; /path/to/project/.dir-locals.el
 ;; ((sql-mode . ((sql-postgres-login-params
@@ -448,21 +459,29 @@
 ;;                  (server :default "localhost")
 ;;                  (port :default 54322))))))
 
-;; starship prompt
-;; Set proper terminal type
-(setenv "TERM" "xterm-256color")
+;; Additional Consult bindings
+(map! :leader
+      (:prefix-map ("s" . "search")
+       :desc "Search project" "p" #'consult-ripgrep
+       :desc "Search buffer" "s" #'consult-line
+       :desc "Search project files" "f" #'consult-find))
 
-;; For eshell specifically
-(after! eshell
-  (setq eshell-prompt-function
-        (lambda ()
-          (let ((prompt-string
-                 (string-trim
-                  (shell-command-to-string
-                   "TERM=xterm-256color STARSHIP_CONFIG=~/.config/starship.toml starship prompt --cmd-duration=0 --status=0"))))
-            (if (string-empty-p prompt-string)
-                "$ "
-              prompt-string))))
+;; Enhanced marginalia annotations
+(after! marginalia
+  (setq marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
-  ;; Make sure the prompt regexp matches your starship prompt
-  (setq eshell-prompt-regexp "^[^$\n]*[$] "))
+;; Corrected Embark configuration
+(map! :leader
+      (:prefix ("k" . "embark")  ;; Using 'k' prefix instead of 'e' which conflicts with elfeed
+       :desc "Embark act" "a" #'embark-act
+       :desc "Embark dwim" "d" #'embark-dwim))
+
+;; Optional: Make vertico use a more minimal display
+(after! vertico
+  (setq vertico-count 17
+        vertico-cycle t))
+
+;; Optional: Configure consult for better previews
+(after! consult
+  (setq consult-preview-key "M-.")
+  (setq consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip"))
