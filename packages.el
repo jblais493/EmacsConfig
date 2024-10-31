@@ -34,6 +34,7 @@
 (package! powerthesaurus)
 (package! elfeed-tube)
 (package! elfeed-tube-mpv)
+(package! define-word)
 
 (package! jabber)
 (package! elpher)

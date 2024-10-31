@@ -140,7 +140,7 @@
 ;;(treemacs-load-theme "all-the-icons")
 
 ;; Transparency
-(set-frame-parameter (selected-frame) 'alpha '(90 . 95))
+(set-frame-parameter (selected-frame) 'alpha '(90 . 92))
 (add-to-list 'default-frame-alist '(alpha . (90 . 95)))
 
 ;; Dimmer setup
@@ -208,6 +208,8 @@
 (setq spell-fu-directory "~/+STORE/dictionary") ;; Please create this directory manually.
 (setq ispell-personal-dictionary "~/+STORE/dictionary/.pws")
 
+;; Dictionary
+(setq +lookup-dictionary-provider 'define-word)
 
 ;;Snippets
 (yas-global-mode 1)
@@ -291,7 +293,7 @@
 (emms-default-players)
 (emms-mode-line-mode 1)
 (emms-playing-time-mode 1)
-(setq emms-source-file-default-directory "/mnt/TrueNAS/media/Music"
+(setq emms-source-file-default-directory "~/Music"
       emms-browser-covers #'emms-browser-cache-thumbnail-async
       emms-browser-thumbnail-small-size 64
       emms-browser-thumbnail-medium-size 128
@@ -480,3 +482,11 @@
 (after! consult
   (setq consult-preview-key "M-.")
   (setq consult-ripgrep-args "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --with-filename --line-number --search-zip"))
+
+(map! :leader
+      :desc "Dirvish in current dir" "d" #'dirvish-dwim)
+
+;; Load various scripts and templates
+(load! "templates/writing-template")
+;; TODO: get this working
+(load! "scripts/tweet-utils")
